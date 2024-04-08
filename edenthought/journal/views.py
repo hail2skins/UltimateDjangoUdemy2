@@ -69,6 +69,10 @@ def login(request):
     
     return render(request, 'journal/login.html', context) # Add this function to render the login.html template
 
+# Logout view
+def logout(request):
+    auth.logout(request)
+    return redirect('')
 
 # User profile/dashboard view
 def dashboard(request):
