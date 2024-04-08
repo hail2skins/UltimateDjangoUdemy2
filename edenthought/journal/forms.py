@@ -9,6 +9,11 @@ from django.forms.widgets import PasswordInput, TextInput # Import password and 
 # Import the user model from django
 from django.contrib.auth.models import User # Built-in user model from Django
 
+# Import the model form class
+from django.forms import ModelForm
+# Import the Thought model
+from . models import Thought     # Import the Thought model from the models file
+
 # Create modelform class
 class CreateUserForm(UserCreationForm):
     # Meta class
@@ -30,4 +35,18 @@ class LoginForm(AuthenticationForm):
         widgets = {
             'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}), # Username field widget
             'password': PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}), # Password field widget
+        }
+        
+# Create a form for the journal entry
+class ThoughtForm(ModelForm):
+    # Meta class
+    class Meta:
+        # Model to be used
+        model = Thought
+        # Fields to be displayed
+        fields = ['title', 'content'] # Title and content fields to be displayed
+        # Widgets to be used
+        widgets = {
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}), # Title field widget
+            'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Content'}), # Content field widget
         }

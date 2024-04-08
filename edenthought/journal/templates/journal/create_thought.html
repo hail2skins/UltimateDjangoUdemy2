@@ -1,4 +1,5 @@
 {% extends 'journal/navbar.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
@@ -8,9 +9,16 @@
             <p id="message-timer" class="alert alert-success float-center text-center">{{ message }}</p>
         {% endif %}
     {% endfor %}
-    <h1>Dashboard</h1>
+    <br><br>
+    <h3>Create a thought</h3>
+    <form method="POST" autocomplete="off">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <br>
+        <button type="submit">Create Thought</button>
+    </form>
 
-    <a href="{% url 'logout' %}">Logout</a>
 </div>
+<br>
 
 {% endblock %}  

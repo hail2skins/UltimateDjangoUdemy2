@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect # Import redirect function from django
 
 # Import forms model class for user creation
-from .forms import CreateUserForm, LoginForm
+from .forms import CreateUserForm, LoginForm, ThoughtForm
 
 # Import login modules from django
 from django.contrib.auth.models import auth
@@ -89,3 +89,34 @@ def dashboard(request):
     # Render the dashboard page template
     return render(request, 'journal/dashboard.html')
 
+# Create a view for the journal entry
+@login_required(login_url='login') # Add this decorator to the create_thought view preventing unauthorized access
+def create_thought(request):
+    # Create an instance of the ThoughtForm class
+    form = ThoughtForm()
+    
+    # Check if the form has been submitted
+    if request.method == 'POST':
+        # Create an instance of the ThoughtForm class with the data from the form
+        form = ThoughtForm(request.POST)
+        
+        # Check if the form is valid
+        if form.is_valid():
+            # Variable to store the form
+            thought = form.save(commit=False)
+            # Set the user to the current user
+            thought.user = request.user
+            # Save the form
+            thought.save()
+            # Add message for success
+            messages.success(request, 'Journal entry created successfully!')
+            # Redirect to the dashboard page
+            return redirect('dashboard')
+            
+    # Create a dictionary to store the form
+    context = {
+        'form': form,
+    }
+    
+    # Render the create thought page template
+    return render(request, 'journal/create_thought.html', context)
