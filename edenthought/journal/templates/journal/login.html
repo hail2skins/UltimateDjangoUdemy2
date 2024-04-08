@@ -1,14 +1,17 @@
+{% load static %}
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/superhero/bootstrap.min.css">
 </head>
 <div class="container">
     <h3>Login to your account</h3>
     <br><br>
     <form method="POST" autocomplete="off">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form | crispy }}
         <br>
         <button type="submit">Login</button>
 </div>

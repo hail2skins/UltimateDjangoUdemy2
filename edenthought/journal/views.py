@@ -8,6 +8,9 @@ from .forms import CreateUserForm, LoginForm
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate, login, logout
 
+# Import decorator for login required
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 # Create a view for the home page
@@ -75,6 +78,7 @@ def logout(request):
     return redirect('')
 
 # User profile/dashboard view
+@login_required(login_url='login') # Add this decorator to the dashboard view preventing unauthorized access
 def dashboard(request):
     
     # Render the dashboard page template
