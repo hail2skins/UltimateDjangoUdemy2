@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+# Import the include() function for apps
+from django.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Include the journal app's URL configuration
+    path('', include('journal.urls')),
 ]
