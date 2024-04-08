@@ -8,12 +8,16 @@
             <p id="message-timer" class="alert alert-success float-center text-center">{{ message }}</p>
         {% endif %}
     {% endfor %}
-    <h1>Dashboard</h1>
-    {{ user }}
-    <br>
-    <br>
+    <br><br>
+    <h3>My Thoughts</h3>
+    {% for thought in thoughts %}
 
-    <a href="{% url 'logout' %}">Logout</a>
+        {{ thought.title }} <br>
+        {{ thought.content }} <br>
+        {{ thought.date_posted }} <br>
+        {{ thought.user }} <br><br><br>
+    {% endfor %}
 </div>
+<br>
 
 {% endblock %}  

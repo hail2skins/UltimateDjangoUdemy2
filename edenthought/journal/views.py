@@ -14,6 +14,9 @@ from django.contrib.auth.decorators import login_required
 # Import module for flash messages
 from django.contrib import messages
 
+# Import the Thought model
+from .models import Thought
+
 
 # Create your views here.
 # Create a view for the home page
@@ -111,7 +114,7 @@ def create_thought(request):
             # Add message for success
             messages.success(request, 'Journal entry created successfully!')
             # Redirect to the dashboard page
-            return redirect('dashboard')
+            return redirect('my-thoughts')
             
     # Create a dictionary to store the form
     context = {
@@ -120,3 +123,20 @@ def create_thought(request):
     
     # Render the create thought page template
     return render(request, 'journal/create_thought.html', context)
+
+# Create a view for the user thoughts
+@login_required(login_url='login') # Add this decorator to the my_thoughts view preventing unauthorized access
+def my_thoughts(request):
+    # Retrieve the current user id
+    current_user = request.user.id
+    
+    # Get all the thoughts for the current user
+    thoughts = Thought.objects.filter(user=current_user)
+    
+    # Create a dictionary to store the thoughts
+    context = {
+        'thoughts': thoughts,
+    }
+    
+    # Render the my thoughts page template
+    return render(request, 'journal/my-thoughts.html', context)

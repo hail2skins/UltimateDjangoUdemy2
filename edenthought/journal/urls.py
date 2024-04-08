@@ -9,4 +9,5 @@ urlpatterns = [
     path('dashboard', views.dashboard, name='dashboard'), # User profile/dashboard path
     path('logout', views.logout, name='logout'), # User logout path
     path('create-thought', views.create_thought, name='create-thought'), # Journal entry path
+    path('my-thoughts', views.my_thoughts, name='my-thoughts'), # User thoughts path
 ]
