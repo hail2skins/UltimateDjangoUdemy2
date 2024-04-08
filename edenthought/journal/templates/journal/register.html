@@ -1,1 +1,16 @@
-<h1>Register</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration</title>
+</head>
+<div class="container">
+    <h3>Create your account</h3>
+    <br><br>
+    <form method="POST" autocomplete="off">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <br>
+        <button type="submit">Register</button>
+</div>
+
+</html>
