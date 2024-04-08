@@ -140,3 +140,34 @@ def my_thoughts(request):
     
     # Render the my thoughts page template
     return render(request, 'journal/my-thoughts.html', context)
+
+# Create a view to update a user thought
+@login_required(login_url='login') # Add this decorator to the update_thought view preventing unauthorized access
+def update_thought(request, pk):
+    # Get the thought by the primary key
+    thought = Thought.objects.get(id=pk)
+    
+    # Create an instance of the ThoughtForm class
+    form = ThoughtForm(instance=thought)
+    
+    # Check if the form has been submitted
+    if request.method == 'POST':
+        # Create an instance of the ThoughtForm class with the data from the form
+        form = ThoughtForm(request.POST, instance=thought)
+        
+        # Check if the form is valid
+        if form.is_valid():
+            # Save the form
+            form.save()
+            # Add message for success
+            messages.success(request, 'Journal entry updated successfully!')
+            # Redirect to the my thoughts page
+            return redirect('my-thoughts')
+            
+    # Create a dictionary to store the form
+    context = {
+        'form': form,
+    }
+    
+    # Render the update thought page template
+    return render(request, 'journal/update_thought.html', context)
