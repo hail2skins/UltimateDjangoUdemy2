@@ -11,6 +11,9 @@ from django.contrib.auth import authenticate, login, logout
 # Import decorator for login required
 from django.contrib.auth.decorators import login_required
 
+# Import module for flash messages
+from django.contrib import messages
+
 
 # Create your views here.
 # Create a view for the home page
@@ -33,6 +36,8 @@ def register(request):
         if form.is_valid():
             # Save the form
             form.save()
+            # Add message for success
+            messages.success(request, 'Account created successfully!')
             # Redirect to the login page
             return redirect('login')
             
