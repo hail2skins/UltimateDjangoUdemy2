@@ -2,7 +2,11 @@ from django.shortcuts import render
 from django.shortcuts import redirect # Import redirect function from django
 
 # Import forms model class for user creation
-from .forms import CreateUserForm
+from .forms import CreateUserForm, LoginForm
+
+# Import login modules from django
+from django.contrib.auth.models import auth
+from django.contrib.auth import authenticate, login, logout
 
 
 # Create your views here.
@@ -37,11 +41,33 @@ def register(request):
     # Render the registration page template
     return render(request, 'journal/register.html', context)
 
-# User login view
+# Login view
 def login(request):
+    # Create a new instance of the LoginForm model
+    form = LoginForm()
     
-    # Render the login page template
-    return render(request, 'journal/login.html')
+    # Check if the form has been submitted using if statement
+    if request.method == 'POST':
+        form = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            # Get the username and password from the form
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            
+            # Authenticate the user
+            user = authenticate(request, username=username, password=password)
+            
+            # Check if user exists
+            if user is not None:
+                auth.login(request, user)
+                return redirect('dashboard') # Redirect to the dashboard view
+    
+    context = {
+        'form': form,
+    }
+    
+    
+    return render(request, 'journal/login.html', context) # Add this function to render the login.html template
 
 
 # User profile/dashboard view
