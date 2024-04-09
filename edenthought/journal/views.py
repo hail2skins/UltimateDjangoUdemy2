@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect # Import redirect function from django
 
 # Import forms model class for user creation
-from .forms import CreateUserForm, LoginForm, ThoughtForm, ProfileManagementForm
+from .forms import CreateUserForm, LoginForm, ThoughtForm, ProfileManagementForm, ProfilePicForm
 
 # Import login modules from django
 from django.contrib.auth.models import auth
@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 # Import the Thought model
-from .models import Thought
+from .models import Thought, Profile
 
 # Import the User model from Django 
 from django.contrib.auth.models import User
@@ -40,8 +40,12 @@ def register(request):
         
         # Check if the form is valid
         if form.is_valid():
+            # Variable to store user to create profile associated with the user
+            current_user = form.save(commit=False)
             # Save the form
             form.save()
+            # Create a profile for the user
+            profile = Profile.objects.create(user=current_user)
             # Add message for success
             messages.success(request, 'Account created successfully!')
             # Redirect to the login page
@@ -92,8 +96,16 @@ def logout(request):
 @login_required(login_url='login') # Add this decorator to the dashboard view preventing unauthorized access
 def dashboard(request):
     
+    # Get profile picture for user
+    profile_pic = Profile.objects.get(user=request.user)
+    
+    # Create a dictionary to store the profile picture
+    context = {
+        'profile_pic': profile_pic,
+    }
+    
     # Render the dashboard page template
-    return render(request, 'journal/dashboard.html')
+    return render(request, 'journal/dashboard.html', context)
 
 # Create a view for the journal entry
 @login_required(login_url='login') # Add this decorator to the create_thought view preventing unauthorized access
@@ -242,3 +254,6 @@ def delete_account(request):
         return redirect('')  # Redirect to a specific URL after deletion
 
     return render(request, 'journal/delete_account.html')
+
+
+

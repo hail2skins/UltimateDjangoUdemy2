@@ -12,7 +12,7 @@ from django.contrib.auth.models import User # Built-in user model from Django
 # Import the model form class
 from django.forms import ModelForm
 # Import the Thought model
-from . models import Thought     # Import the Thought model from the models file
+from . models import Thought, Profile    # Import the Thought model from the models file
 
 # Create modelform class
 class CreateUserForm(UserCreationForm):
@@ -66,4 +66,17 @@ class ProfileManagementForm(ModelForm):
         widgets = {
             'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}), # Username field widget
             'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}), # Email field widget
+        }
+        
+# Create a form for the profile picture
+class ProfilePicForm(ModelForm):
+    # Meta class
+    class Meta:
+        # Model to be used
+        model = Profile
+        # Fields to be displayed
+        fields = ['profile_pic'] # Profile picture field to be displayed
+        # Widgets to be used
+        widgets = {
+            'profile_pic': forms.FileInput(attrs={'class': 'form-control-file'}), # Profile picture field widget
         }
