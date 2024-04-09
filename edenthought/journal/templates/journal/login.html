@@ -12,6 +12,10 @@
     {% for message in messages %}
         {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
             <p id="message-timer" class="alert alert-success float-center text-center">{{ message }}</p>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <p id="message-timer" class="alert alert-danger float-center text-center">{{ message }}</p>
+        {% else %}
+            <p id="message-timer" class="alert alert-info float-center text-center">{{ message }}</p>
         {% endif %}
     {% endfor %}
     <form method="POST" autocomplete="off">

@@ -1,5 +1,4 @@
 {% extends 'journal/navbar.html' %}
-{% load crispy_forms_tags %}
 
 {% block content %}
 
@@ -14,13 +13,17 @@
         {% endif %}
     {% endfor %}
     <br><br>
-    <h3>Create a thought</h3>
+    <h3>Delete a thought</h3>
+    <p>Are you sure you want to delete this thought?</p>
     <form method="POST" autocomplete="off">
         {% csrf_token %}
-        {{ form | crispy }}
+        
         <br>
-        <button type="submit">Create Thought</button>
+        <button type="submit">Delete Thought</button>
     </form>
+
+    <br><br>
+    <a href="{% url 'my-thoughts' %}">Back to Thoughts</a>
 
 </div>
 <br>

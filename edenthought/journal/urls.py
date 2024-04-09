@@ -11,4 +11,5 @@ urlpatterns = [
     path('create-thought', views.create_thought, name='create-thought'), # Journal entry path
     path('my-thoughts', views.my_thoughts, name='my-thoughts'), # User thoughts path
     path('update_thought/<str:pk>', views.update_thought, name='update_thought'), # Update user thought path
+    path('delete_thought/<str:pk>', views.delete_thought, name='delete_thought'), # Delete user thought path
 ]

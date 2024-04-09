@@ -6,6 +6,10 @@
     {% for message in messages %}
         {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
             <p id="message-timer" class="alert alert-success float-center text-center">{{ message }}</p>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <p id="message-timer" class="alert alert-danger float-center text-center">{{ message }}</p>
+        {% else %}
+            <p id="message-timer" class="alert alert-info float-center text-center">{{ message }}</p>
         {% endif %}
     {% endfor %}
     <br><br>
@@ -16,6 +20,7 @@
         {{ thought.content }} <br>
         {{ thought.date_posted }} <br>
         {{ thought.user }} <br><br><br>
+        <a href="{% url 'delete_thought' thought.id %}">Delete</a><br><br><br>
     {% endfor %}
 </div>
 <br>

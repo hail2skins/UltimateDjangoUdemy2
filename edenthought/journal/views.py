@@ -144,8 +144,13 @@ def my_thoughts(request):
 # Create a view to update a user thought
 @login_required(login_url='login') # Add this decorator to the update_thought view preventing unauthorized access
 def update_thought(request, pk):
-    # Get the thought by the primary key
-    thought = Thought.objects.get(id=pk)
+    # generate a try and except block to handle the error
+    try:
+        # Get the thought by the primary key, and the current user
+        thought = Thought.objects.get(id=pk, user=request.user)
+    except:
+        messages.error(request, 'Journal entry not found!')
+        return redirect('my-thoughts')
     
     # Create an instance of the ThoughtForm class
     form = ThoughtForm(instance=thought)
@@ -171,3 +176,25 @@ def update_thought(request, pk):
     
     # Render the update thought page template
     return render(request, 'journal/update_thought.html', context)
+
+# Create a view to delete a user thought
+@login_required(login_url='login') # Add this decorator to the delete_thought view preventing unauthorized access
+def delete_thought(request, pk):
+    # generate a try and except block to handle the error
+    try:
+        # Get the thought by the primary key, and the current user
+        thought = Thought.objects.get(id=pk, user=request.user)
+    except:
+        messages.error(request, 'Journal entry not found!')
+        return redirect('my-thoughts')
+    
+    # Check if the request method is POST
+    if request.method == 'POST':
+        # Delete the thought
+        thought.delete()
+        # Add message for success
+        messages.success(request, 'Journal entry deleted successfully!')
+        # Redirect to the my thoughts page
+        return redirect('my-thoughts')
+        
+    return render(request, 'journal/delete_thought.html')
