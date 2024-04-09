@@ -23,6 +23,26 @@
     </form>
 
 </div>
+<div class="container shadow-md form-layout">
+    {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <p id="message-timer" class="alert alert-success float-center text-center">{{ message }}</p>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <p id="message-timer" class="alert alert-danger float-center text-center">{{ message }}</p>
+        {% else %}
+            <p id="message-timer" class="alert alert-info float-center text-center">{{ message }}</p>
+        {% endif %}
+    {% endfor %}
+    <br><br>
+    <h3>Profile Pic</h3>
+    <form method="POST" autocomplete="off" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ pic_form | crispy }}
+        <br>
+        <button type="submit">Upload Pic</button>
+    </form>
+
+</div>
 <br>
 <div class="container shadow-md form-layout">
     <h3>Delete account</h3>

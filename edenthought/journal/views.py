@@ -220,10 +220,17 @@ def profile_management(request):
     # Create an instance of the ProfileManagementForm class
     form = ProfileManagementForm(instance=request.user)
     
+    # Query the Profile model to get the profile picture
+    profile = Profile.objects.get(user=request.user)
+    
+    # Create an instance of the ProfilePicForm class
+    pic_form = ProfilePicForm(instance=profile)
+    
     # Check if the form has been submitted
     if request.method == 'POST':
         # Create an instance of the ProfileManagementForm class with the data from the form
         form = ProfileManagementForm(request.POST, instance=request.user)
+        pic_form = ProfilePicForm(request.POST, request.FILES, instance=profile)
         
         # Check if the form is valid
         if form.is_valid():
@@ -233,10 +240,20 @@ def profile_management(request):
             messages.success(request, 'Profile updated successfully!')
             # Redirect to the profile management page
             return redirect('dashboard')
+        
+        # Check if the pic_form is valid
+        if pic_form.is_valid():
+            # Save the form
+            pic_form.save()
+            # Add message for success
+            messages.success(request, 'Profile picture updated successfully!')
+            # Redirect to the profile management page
+            return redirect('dashboard')
     
     # Create a dictionary to store the form
     context = {
         'form': form,
+        'pic_form': pic_form,
     }
     
     # Render the profile management page template
