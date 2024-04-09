@@ -50,3 +50,20 @@ class ThoughtForm(ModelForm):
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}), # Title field widget
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Content'}), # Content field widget
         }
+        
+# Profile management form to change user details
+class ProfileManagementForm(ModelForm):
+    
+    password = None # Password field is set to none to prevent it from being displayed
+    
+    # Meta class
+    class Meta:
+        # Model to be used
+        model = User
+        # Fields to be displayed
+        fields = ['username', 'email'] # Username and email fields to be displayed
+        # Widgets to be used
+        widgets = {
+            'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}), # Username field widget
+            'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}), # Email field widget
+        }

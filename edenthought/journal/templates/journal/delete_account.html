@@ -1,0 +1,31 @@
+{% extends 'journal/navbar.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container shadow-md form-layout">
+    {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <p id="message-timer" class="alert alert-success float-center text-center">{{ message }}</p>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <p id="message-timer" class="alert alert-danger float-center text-center">{{ message }}</p>
+        {% else %}
+            <p id="message-timer" class="alert alert-info float-center text-center">{{ message }}</p>
+        {% endif %}
+    {% endfor %}
+    <br><br>
+    <h3>Delete Account</h3>
+    <p>Are you sure you want to delete your account?</p>
+    <form method="POST" autocomplete="off">
+        {% csrf_token %}
+        
+        <br>
+        <button type="submit">Delete</button>
+    </form>
+    <br>
+    <a href="{% url 'dashboard' %}">Cancel</a>
+
+</div>
+
+
+{% endblock %}  

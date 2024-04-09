@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect # Import redirect function from django
 
 # Import forms model class for user creation
-from .forms import CreateUserForm, LoginForm, ThoughtForm
+from .forms import CreateUserForm, LoginForm, ThoughtForm, ProfileManagementForm
 
 # Import login modules from django
 from django.contrib.auth.models import auth
@@ -16,6 +16,9 @@ from django.contrib import messages
 
 # Import the Thought model
 from .models import Thought
+
+# Import the User model from Django 
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -198,3 +201,44 @@ def delete_thought(request, pk):
         return redirect('my-thoughts')
         
     return render(request, 'journal/delete_thought.html')
+
+# Create a view for profile_management
+@login_required(login_url='login') # Add this decorator to the profile_management view preventing unauthorized access
+def profile_management(request):
+    # Create an instance of the ProfileManagementForm class
+    form = ProfileManagementForm(instance=request.user)
+    
+    # Check if the form has been submitted
+    if request.method == 'POST':
+        # Create an instance of the ProfileManagementForm class with the data from the form
+        form = ProfileManagementForm(request.POST, instance=request.user)
+        
+        # Check if the form is valid
+        if form.is_valid():
+            # Save the form
+            form.save()
+            # Add message for success
+            messages.success(request, 'Profile updated successfully!')
+            # Redirect to the profile management page
+            return redirect('dashboard')
+    
+    # Create a dictionary to store the form
+    context = {
+        'form': form,
+    }
+    
+    # Render the profile management page template
+    return render(request, 'journal/profile_management.html', context)
+
+# Create a view to delete a user account
+@login_required(login_url='login') # Add this decorator to the delete_account view preventing unauthorized access
+def delete_account(request):
+    # Check if the request method is POST
+    if request.method == 'POST':
+        #delete the user
+        request.user.delete() 
+        # Add message for success and redirect to the home page
+        messages.success(request, 'Account deleted successfully!')
+        return redirect('')  # Redirect to a specific URL after deletion
+
+    return render(request, 'journal/delete_account.html')
