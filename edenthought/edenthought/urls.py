@@ -19,8 +19,15 @@ from django.urls import path
 # Import the include() function for apps
 from django.urls import include
 
+# Import settings from settings.py
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Include the journal app's URL configuration
     path('', include('journal.urls')),
 ]
+
+# Add the media URL configuration to the urlpatterns
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

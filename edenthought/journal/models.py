@@ -18,3 +18,13 @@ class Thought(models.Model):
     # Create a string representation of the model
     def __str__(self):
         return self.title
+
+# Create a model for the user profile
+class Profile(models.Model):
+    # Create a field for profile_pic
+    profile_pic = models.ImageField(null=True, blank=True, default='default.png')
+    # Create a field for the user
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    #user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    
