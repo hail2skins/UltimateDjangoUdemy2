@@ -9,6 +9,10 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+# import the environ module these three lines critical for environment variables
+import environ
+env = environ.Env()
+environ.Env.read_env()
 
 from pathlib import Path
 
@@ -20,12 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_)2&1s*i-i%g4!3k122(4t8$7w@bb$*^q8tae0a3)ppwx6^*7r'
+SECRET_KEY = env('SECRET_KEY')  
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+#CSRF_TRUSTED_ORIGINS = []
 
 
 # Application definition
@@ -85,11 +91,11 @@ WSGI_APPLICATION = 'edenthought.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'edenthought',
-        'USER': 'localadmin',
-        'PASSWORD': 'P@ssw0rd',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT'),
     }
 }
 
